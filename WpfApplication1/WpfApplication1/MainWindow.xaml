@@ -1,0 +1,670 @@
+﻿<Window x:Class="WpfApplication1.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="MainWindow" MinHeight="650" MinWidth="900">
+    
+    <Window.Resources>
+        <DataTemplate x:Key="P_TTD_Red">
+            <Menu Background="Red">
+            <MenuItem Header="Гол" Background="Red">
+                <MenuItem Name="MenuItemWithClick" Header="Гол с 11 метров (пинальти)" Click="MenuItem_Click"/>
+                    <MenuItem Header="Голевая передача" Click="MenuItem_Click"/>
+                    <MenuItem Header="Явная предпоследняя передача" Click="MenuItem_Click"/>
+                    <MenuItem Header="Удар-добивание+гол" Click="MenuItem_Click"/>
+                    <MenuItem Header="Удар+добивание" Click="MenuItem_Click"/>
+                    <MenuItem Header="ТТД приведшие к назначению пинальти" Click="MenuItem_Click"/>
+            </MenuItem>
+            </Menu>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="P_TTD_Yellow">
+            <Menu Background="Yellow">
+                <MenuItem Header="Фол" Background="Yellow">
+                    <MenuItem Header="Фол соперника+желтая карточка" Click="MenuItem_Click"/>
+                    <MenuItem Header="Фол соперника+красная карточка" Click="MenuItem_Click"/>
+                    <MenuItem Header="Фол соперника" Click="MenuItem_Click"/>
+                    <MenuItem Header="ТТД, приведшее к угловому удару" Click="MenuItem_Click"/>
+                    <MenuItem Header="Острая подача мяча в штрафную площадь" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="P_TTD_Green">
+            <Menu Background="Green">
+            <MenuItem Header="Получение мяча" Background="Green">
+                    <MenuItem Header="Выйгрыш верховой борьбы" Click="MenuItem_Click"/>
+                    <MenuItem Header="Получение мяча" Click="MenuItem_Click"/>
+            </MenuItem>
+            </Menu>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="P_TTD_Blue">
+            <Menu Background="Blue">
+                <MenuItem Header="Отбор мяча" Background="Blue">
+                    <MenuItem Header="Отбор мяча у соперника+передача" Click="MenuItem_Click"/>
+                    <MenuItem Header="Отбор мяча, при этом мяч остался у соперника" Click="MenuItem_Click"/>
+                    <MenuItem Header="Отбор мяча у соперника без выполнения партнеру" Click="MenuItem_Click"/>
+                    <MenuItem Header="Отбор мяча у соперника после единоборства" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="P_TTD_Brown"> <!--для зон 1-11 -->
+            <Menu Background="Brown">
+                <MenuItem Header="Передача мяча" Background="Brown">
+                    <MenuItem Header="Поперечная/назад" Click="MenuItem_Click"/>
+                    <MenuItem Header="Вперед/диагональная" Click="MenuItem_Click"/>
+                    <MenuItem Header="Длинная обостряющая передача мяча атакующему игроку" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="P_TTD_Brown2"><!--для зон 12-14 -->
+            <Menu Background="Brown">
+                <MenuItem Header="Передача мяча" Background="Brown">
+                    <MenuItem Header="Передача мяча" Click="MenuItem_Click"/>
+                    <MenuItem Header="Длинная обостряющая передача мяча атакующему игроку" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="P_TTD_LightBlue">
+            <Menu Background="LightBlue">
+                <MenuItem Header="Удары по воротам" Background="LightBlue">
+                    <MenuItem Header="Удары в створ ворот+удары в конструкцию ворот" Click="MenuItem_Click"/>
+                    <MenuItem Header="Удары в створ ворот из стандартных положений" Click="MenuItem_Click"/>
+                    <MenuItem Header="Удары в створ ворот блокированные соперником" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+        
+        <DataTemplate x:Key="M_TTD_Red">
+            <Menu Background="Red">
+                <MenuItem Header="Не придумал" Background="Red">
+                    <MenuItem Header="Не забитый гол с 11 метров (пинальти)" Click="MenuItem_Click"/>
+                    <MenuItem Header="Гол в свои ворота (автогол)" Click="MenuItem_Click"/>
+                    <MenuItem Header="Нарушение правил, приведшее к назначению пинальти (11 метров) в свои ворота" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="M_TTD_Yellow">
+            <Menu Background="Yellow">
+                <MenuItem Header="Фол" Background="Yellow">
+                    <MenuItem Header="Получение предупреждения (желтая карточка)" Click="MenuItem_Click"/>
+                    <MenuItem Header="Удаление игрока с поля (красная карточка)" Click="MenuItem_Click"/>
+                    <MenuItem Header="Нарушение правил в игровой зоне" Click="MenuItem_Click"/>
+                    <MenuItem Header="Попадание в офсайд (вне игры)" Click="MenuItem_Click"/>
+                    <MenuItem Header="Неточное вбрасывание мяча в игру (аут) из-за боковой линии" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="M_TTD_Green">
+            <Menu Background="Green">
+                <MenuItem Header="Проигранное единоборство" Background="Green">
+                    <MenuItem Header="Проигранное единоборство с соперником, приведшее к голу" Click="MenuItem_Click"/>
+                    <MenuItem Header="Проигрыш верховой борьбы в игровой зоне" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="M_TTD_Blue">
+            <Menu Background="Blue">
+                <MenuItem Header="Потеря мяча" Background="Blue">
+                    <MenuItem Header="Голевая потеря мяча (0-2) передача" Click="MenuItem_Click"/>
+                    <MenuItem Header="Потеря мяча на ведении в игровой зоне" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="M_TTD_Brown">  <!--для зон 1-11 -->
+            <Menu Background="Brown">
+                <MenuItem Header="Передача мяча" Background="Brown">
+                    <MenuItem Header="Неточная передача мяча (поперечная/назад) в игровой зоне" Click="MenuItem_Click"/>
+                    <MenuItem Header="Неточная передача мяча (вперед/диагональ) в игровой зоне" Click="MenuItem_Click"/>
+                    <MenuItem Header="Не вынужденная неточная передача мяча" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="M_TTD_Brown2">           <!--для зон 12-14 -->
+            <Menu Background="Brown">
+                <MenuItem Header="Передача мяча" Background="Brown">
+                    <MenuItem Header="Неточная передача мяча в игровой зоне" Click="MenuItem_Click"/>
+                    <MenuItem Header="Не вынужденная неточная передача мяча" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+        <DataTemplate x:Key="M_TTD_LightBlue">
+            <Menu Background="LightBlue">
+                <MenuItem Header="Удары мимо ворот" Background="LightBlue">
+                    <MenuItem Header="Удары мимо створа ворот ногой из игровой зоны" Click="MenuItem_Click"/>
+                    <MenuItem Header="Удары мимо створа ворот головой" Click="MenuItem_Click"/>
+                </MenuItem>
+            </Menu>
+        </DataTemplate>
+
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"></RowDefinition>
+            <RowDefinition Height="5*"></RowDefinition>
+        </Grid.RowDefinitions>
+        
+        <StackPanel Name="Players" Grid.Row="0" Background="LightBlue" Orientation="Horizontal" VerticalAlignment="Center" HorizontalAlignment="Center"><!-- панель выбора игроков -->
+            <Label VerticalAlignment="Center" Margin="5">Игрок</Label>
+            <ComboBox Name="TypePlayer" MinHeight="20" MaxHeight="30" MinWidth="80" Margin="5">
+                <ComboBoxItem>Защитник</ComboBoxItem>
+                <ComboBoxItem>Полузащитник</ComboBoxItem>
+                <ComboBoxItem>Нападающий</ComboBoxItem>
+            </ComboBox>
+            <Button Name="Player1" MinHeight="40" MinWidth="50" Margin="10" Content='#1' Background="White" Click="Player_Click" ></Button> <!-- эта кнопка задаёт минимальные размеры для других кнопок данной панели-->
+            <Button Name="Player2" MinHeight="{Binding ElementName=Player1 , Path=MinHeight}" MinWidth="{Binding ElementName=Player1 , Path=MinWidth}" Background="White" Margin="10" Content='#2' Click="Player_Click"/>
+            <Button Name="Player3" MinHeight="{Binding ElementName=Player1 , Path=MinHeight}" MinWidth="{Binding ElementName=Player1 , Path=MinWidth}" Background="White" Margin="10" Content='#3' Click="Player_Click"/>
+            <Button Name="Player4" MinHeight="{Binding ElementName=Player1 , Path=MinHeight}" MinWidth="{Binding ElementName=Player1 , Path=MinWidth}" Background="White" Margin="10" Content='#4' Click="Player_Click"/>
+            <Button Name="Player5" MinHeight="{Binding ElementName=Player1 , Path=MinHeight}" MinWidth="{Binding ElementName=Player1 , Path=MinWidth}" Background="White" Margin="10" Content='#5' Click="Player_Click"/>
+            <Label VerticalAlignment="Center" Margin="20,0,0,0">Тип действия:</Label>
+            <Button Name="Button_Positive" MinHeight="{Binding ElementName=Player1 , Path=MinHeight}" MinWidth="{Binding ElementName=Player1 , Path=MinWidth}" Background="White" Margin="10" Content='ПОЛОЖИТЕЛЬНОЕ' Click="Show_P_TTD"></Button>
+            <Button Name="Button_Negative" MinHeight="{Binding ElementName=Player1 , Path=MinHeight}" MinWidth="{Binding ElementName=Player1 , Path=MinWidth}" Background="White" Margin="10" Content='ОТРИЦАТЕЛЬНОЕ' Click="Show_M_TTD"></Button>
+        </StackPanel>
+
+        <Grid Name="Field" Grid.Row="1" Background="GreenYellow" Margin="5">    <!-- поле -->
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"></ColumnDefinition>  <!-- размер столбца зон 1-6 -->
+                <ColumnDefinition Width="*"></ColumnDefinition> <!-- размер столбца зон 7 и 8 -->
+                <ColumnDefinition Width="3*"></ColumnDefinition> <!-- размер столбца зон 9-14 -->
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0">  <!-- зоны с 1 по 6 -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="1.5*"></RowDefinition>  <!--высота зон 2 и 5 -->
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Rectangle Grid.Row="2" Grid.Column="0" Stroke="White" StrokeThickness="4" VerticalAlignment="Top" Height="55" Margin="-2,-2,1,0"></Rectangle>  <!--начало зоны у ворот в левой части-->
+                <Border Grid.Row="1" Grid.Column="0" Background="White" HorizontalAlignment="Right" Width="4" Margin="0,0,1,0" ></Border>
+                <Rectangle Grid.Row="0" Grid.Column="0" Stroke="White" StrokeThickness="4" VerticalAlignment="Bottom" Height="55" Margin="-2,0,1,-2"></Rectangle>
+                <Rectangle Grid.Row="1" Grid.Column="0" Stroke="White" HorizontalAlignment="Left" StrokeThickness="4" Margin="0,20,0,20" Width="40" RenderTransformOrigin="0.5,1"></Rectangle>  <!--конец зоны у ворот -->
+
+                <DockPanel Name="Zone1_P_TTD" Grid.Row="0" Grid.Column="0" MouseEnter="Zone_MouseEnter">   <!-- зона 1 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <StackPanel >
+                        <Label HorizontalAlignment="Center">Зона #1</Label>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                        </StackPanel>
+                    </StackPanel>
+                    
+                </DockPanel>
+                <DockPanel Name="Zone1_M_TTD" Grid.Row="0" Grid.Column="0" MouseEnter="Zone_MouseEnter">   <!-- зона 1 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <StackPanel >
+                            <Label HorizontalAlignment="Center">Зона #1</Label>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                            <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                        </StackPanel>
+                    </StackPanel>
+
+                </DockPanel>
+
+                <DockPanel Name="Zone2_P_TTD" Grid.Row="1" Grid.Column="0" MouseEnter="Zone_MouseEnter">   <!-- зона 2 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #2</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel  Name="Zone2_M_TTD" Grid.Row="1" Grid.Column="0" MouseEnter="Zone_MouseEnter">    <!-- зона 2 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #2</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Name="Zone3_P_TTD" Grid.Row="2" Grid.Column="0" MouseEnter="Zone_MouseEnter"> <!-- зона 3 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #3</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone3_M_TTD" Grid.Row="2" Grid.Column="0" MouseEnter="Zone_MouseEnter">  <!-- зона 3 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #3</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Name="Zone4_P_TTD" Grid.Row="0" Grid.Column="2" MouseEnter="Zone_MouseEnter">  <!-- зона 4 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #4</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone4_M_TTD" Grid.Row="0" Grid.Column="2" MouseEnter="Zone_MouseEnter">  <!-- зона 4 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #4</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+
+                <DockPanel Name="Zone5_P_TTD" Grid.Row="1" Grid.Column="1" MouseEnter="Zone_MouseEnter">   <!-- зона 5 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #5</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone5_M_TTD" Grid.Row="1" Grid.Column="1" MouseEnter="Zone_MouseEnter">   <!-- зона 5 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #5</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+
+                <DockPanel  Name="Zone6_P_TTD" Grid.Row="2" Grid.Column="1" MouseEnter="Zone_MouseEnter"> <!-- зона 6 положительные -->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #6</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel  Name="Zone6_M_TTD" Grid.Row="2" Grid.Column="1" MouseEnter="Zone_MouseEnter">  <!-- зона 6 отрицательные -->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #6</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+            </Grid>     <!-- конец зон с 1 по 6 -->
+
+            <Border Grid.Column="1" Background="White" Width="4"></Border>      <!--вертикальная полоса в центре поля-->
+
+            <Grid Grid.Column="1">
+                <!-- зоны 7 и 8 -->
+                <Grid.RowDefinitions>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                    <RowDefinition ></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <DockPanel Name="Zone7_P_TTD" Grid.Row="0" Grid.Column="0" MouseEnter="Zone_MouseEnter">  <!-- зона 7 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #7</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone7_M_TTD" Grid.Row="0" Grid.Column="0" MouseEnter="Zone_MouseEnter">  <!-- зона 7 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #7</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+                <Ellipse  Name="Circle" Grid.Column="1" Grid.Row="1" Stroke="White" StrokeThickness="4" Margin="0,10,0,10"></Ellipse>
+                <!-- круг в центре поля -->
+                <Border Grid.Column="1" Grid.Row="1" Background="Black" Height="4"></Border>
+                <!-- разделение зон 7 и 8 -->
+
+                <DockPanel  Name="Zone8_P_TTD" Grid.Row="2" Grid.Column="0" MouseEnter="Zone_MouseEnter"> <!-- зона 8 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #8</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel  Name="Zone8_M_TTD" Grid.Row="2" Grid.Column="0" MouseEnter="Zone_MouseEnter"> <!-- зона 8 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <StackPanel  VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #8</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+            </Grid>    <!-- конец зон 7 и 8 -->
+
+            <Grid Grid.Column="2">     <!-- зоны с 9 по 14 -->
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="2*"></ColumnDefinition>
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"></RowDefinition>
+                    <RowDefinition Height="1.5*"></RowDefinition>         <!-- высота зон 10 и 13-->
+                    <RowDefinition Height="*"></RowDefinition>
+                </Grid.RowDefinitions>
+
+                <Rectangle Grid.Row="2" Grid.Column="1" Stroke="White" StrokeThickness="4" VerticalAlignment="Top" Height="55" Margin="1,-2,-2,0"></Rectangle>    <!-- начало зоны у ворот в правой части -->
+                <Border Grid.Row="1" Grid.Column="1" Background="White" HorizontalAlignment="Left" Width="4" Margin="1,0,0,0" ></Border>
+                <Rectangle Grid.Row="0" Grid.Column="1" Stroke="White" StrokeThickness="4" VerticalAlignment="Bottom" Height="55" Margin="1,0,-2,-2"></Rectangle>
+                <Rectangle Grid.Row="1" Grid.Column="1" Stroke="White" HorizontalAlignment="Right" StrokeThickness="4" Margin="0,20,0,20" Width="40"></Rectangle>        <!-- конец зоны у ворот -->
+
+                <DockPanel Name="Zone9_P_TTD" Grid.Row="0" Grid.Column="0" MouseEnter="Zone_MouseEnter">    <!-- зона 9 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #9</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone9_M_TTD" Grid.Row="0" Grid.Column="0" MouseEnter="Zone_MouseEnter"> <!-- зона 9 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #9</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Name="Zone10_P_TTD" Grid.Row="1" Grid.Column="0" MouseEnter="Zone_MouseEnter">        <!-- зона 10 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #10</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone10_M_TTD" Grid.Row="1" Grid.Column="0" MouseEnter="Zone_MouseEnter"> <!-- зона 10 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #10</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Name="Zone11_P_TTD" Grid.Row="2" Grid.Column="0" MouseEnter="Zone_MouseEnter">          <!-- зона 11 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #11</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone11_M_TTD" Grid.Row="2" Grid.Column="0" MouseEnter="Zone_MouseEnter">  <!-- зона 11 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #11</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Name="Zone12_P_TTD" Grid.Row="0" Grid.Column="2" MouseEnter="Zone_MouseEnter">            <!-- зона 12 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #12</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown2}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone12_M_TTD" Grid.Row="0" Grid.Column="2" MouseEnter="Zone_MouseEnter">  <!-- зона 12 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #12</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown2}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+                <DockPanel Name="Zone13_P_TTD" Grid.Row="1" Grid.Column="1" MouseEnter="Zone_MouseEnter">           <!-- зона 13 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #13</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown2}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone13_M_TTD" Grid.Row="1" Grid.Column="1" MouseEnter="Zone_MouseEnter"> <!-- зона 13 отрицательные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #13</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown2}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+
+                <DockPanel Name="Zone14_P_TTD" Grid.Row="2" Grid.Column="1" MouseEnter="Zone_MouseEnter">                  <!-- зона 14 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #14</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_Brown2}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource P_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+                <DockPanel Name="Zone14_M_TTD" Grid.Row="2" Grid.Column="1" MouseEnter="Zone_MouseEnter"><!-- зона 14 положительные-->
+                    <Border Background="Black" DockPanel.Dock="Top" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Bottom" Height="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Left" Width="2"></Border>
+                    <Border Background="Black" DockPanel.Dock="Right" Width="2"></Border>
+                    <StackPanel   VerticalAlignment="Center">
+                        <Label HorizontalAlignment="Center">Зона #14</Label>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Red}">Гол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Yellow}">Фол</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Green}">Получение мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Blue}">Отбор мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_Brown2}">Передача мяча</Menu>
+                        <Menu Background="Black" Margin="5,0,5,0" HorizontalAlignment="Center" ItemTemplate="{StaticResource M_TTD_LightBlue}">Удары по воротам</Menu>
+                    </StackPanel>
+                </DockPanel>
+
+
+            </Grid>   <!-- конец зон с 9 по 14 -->
+
+        </Grid>
+
+    </Grid>
+</Window>
